@@ -10,8 +10,6 @@ class Sorting {
 public:
     vector<int> static bubbleSort(vector<int> numbers);
     vector<int> static improvedBubbleSort(vector<int> numbers);
-    vector<int> static selectionSort(vector<int> numbers);
-    vector<int> static insertionSort(vector<int> numbers);
     vector<int> static quickSort(vector<int> numbers);
     vector<int> static mergeSort(vector<int> numbers);
 

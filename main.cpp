@@ -10,7 +10,6 @@ using std::cout;
 using std::endl;
 using std::vector;
 
-
 std::chrono::system_clock::time_point startTime;
 std::chrono::system_clock::time_point endTime;
 int maxRandomSize = 1000000;
@@ -20,12 +19,10 @@ void displayTimeTaken(const string& sortType, int listSize);
 void generateFile(int size);
 string generateRandomNumber();
 
-
 int main() {
+    int listSizes[] = {10, 20, 50, 100, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 1000000};
 
-    int listSizes[] = {10, 20, 50, 100, 1000, 10000, 20000, 50000, 100000, 1000000};
-
-    vector<int> rawNumbers = readFile(100, true);
+    vector<int> rawNumbers = readFile(1000, true);
     vector<int> numbersToSort = rawNumbers;
 
 //    for (const auto &size: listSizes){
@@ -36,6 +33,11 @@ int main() {
 //        endTime = std::chrono::high_resolution_clock::now();
 //        displayTimeTaken("Bubble", (int) numbersToSort.size());
 //    }
+
+
+
+
+
 
     startTime = std::chrono::high_resolution_clock::now();
     Sorting::bubbleSort(numbersToSort);
@@ -49,13 +51,27 @@ int main() {
     endTime = std::chrono::high_resolution_clock::now();
     displayTimeTaken("Improved Bubble", (int) numbersToSort.size());
 
+    numbersToSort = rawNumbers;
+
+    startTime = std::chrono::high_resolution_clock::now();
+    Sorting::mergeSort(numbersToSort);
+    endTime = std::chrono::high_resolution_clock::now();
+    displayTimeTaken("Merge", (int) numbersToSort.size());
+
+
+
 
     // init file setup
+//    generateFile(3);
+//    generateFile(5);
 //    generateFile(10);
 //    generateFile(20);
 //    generateFile(50);
 //    generateFile(100);
+//    generateFile(500);
 //    generateFile(1000);
+//    generateFile(2000);
+//    generateFile(5000);
 //    generateFile(10000);
 //    generateFile(20000);
 //    generateFile(50000);
@@ -74,7 +90,7 @@ void displayTimeTaken(const string &sortType, int listSize){
     cout << sortType << " sort: " << listSize << endl;
     cout << "Total execution time (Microseconds): " << microDuration.count() << endl;
     cout << "Total execution time (Milliseconds): " << milliDuration.count() << endl;
-    cout << "Total execution time (Seconds): " << secondsDuration.count() << endl;
+    //cout << "Total execution time (Seconds): " << secondsDuration.count() << endl;
     cout << endl;
 }
 
