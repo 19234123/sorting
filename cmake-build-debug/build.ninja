@@ -55,6 +55,12 @@ build CMakeFiles/sorting.dir/main.cpp.obj: CXX_COMPILER__sorting_unscanned_Debug
   OBJECT_DIR = CMakeFiles\sorting.dir
   OBJECT_FILE_DIR = CMakeFiles\sorting.dir
 
+build CMakeFiles/sorting.dir/Sorting.cpp.obj: CXX_COMPILER__sorting_unscanned_Debug C$:/Users/Steven/CLionProjects/sorting/Sorting.cpp || cmake_object_order_depends_target_sorting
+  DEP_FILE = CMakeFiles\sorting.dir\Sorting.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\sorting.dir
+  OBJECT_FILE_DIR = CMakeFiles\sorting.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target sorting
@@ -63,7 +69,7 @@ build CMakeFiles/sorting.dir/main.cpp.obj: CXX_COMPILER__sorting_unscanned_Debug
 #############################################
 # Link the executable sorting.exe
 
-build sorting.exe: CXX_EXECUTABLE_LINKER__sorting_Debug CMakeFiles/sorting.dir/main.cpp.obj
+build sorting.exe: CXX_EXECUTABLE_LINKER__sorting_Debug CMakeFiles/sorting.dir/main.cpp.obj CMakeFiles/sorting.dir/Sorting.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\sorting.dir

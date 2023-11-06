@@ -2,30 +2,30 @@
 #include <random>
 #include <fstream>
 #include <chrono>
-#include <utility>
 #include <vector>
+#include "Sorting.h"
 
 using std::string;
 using std::cout;
 using std::endl;
 using std::vector;
 
+
 std::chrono::system_clock::time_point startTime;
 std::chrono::system_clock::time_point endTime;
 int maxRandomSize = 1000000;
 
 vector<int> readFile(int size, bool fromFile);
-vector<int> bubbleSort(vector<int> numbers);
-vector<int> improvedBubbleSort(vector<int> numbers);
 void displayTimeTaken(const string& sortType, int listSize);
 void generateFile(int size);
 string generateRandomNumber();
+
 
 int main() {
 
     int listSizes[] = {10, 20, 50, 100, 1000, 10000, 20000, 50000, 100000, 1000000};
 
-    vector<int> rawNumbers = readFile(10000, true);
+    vector<int> rawNumbers = readFile(100, true);
     vector<int> numbersToSort = rawNumbers;
 
 //    for (const auto &size: listSizes){
@@ -38,14 +38,14 @@ int main() {
 //    }
 
     startTime = std::chrono::high_resolution_clock::now();
-    bubbleSort(numbersToSort);
+    Sorting::bubbleSort(numbersToSort);
     endTime = std::chrono::high_resolution_clock::now();
     displayTimeTaken("Bubble", (int) numbersToSort.size());
 
     numbersToSort = rawNumbers;
 
     startTime = std::chrono::high_resolution_clock::now();
-    improvedBubbleSort(numbersToSort);
+    Sorting::improvedBubbleSort(numbersToSort);
     endTime = std::chrono::high_resolution_clock::now();
     displayTimeTaken("Improved Bubble", (int) numbersToSort.size());
 
@@ -65,43 +65,6 @@ int main() {
     return 0;
 }
 
-
-
-vector<int> bubbleSort(vector<int> numbers){
-    vector<int> sorted = std::move(numbers);
-    int changed;
-    do {
-        changed = 0;
-        for (int i=1; i<sorted.size(); i++){
-            if (sorted.at(i-1) > sorted.at(i)){
-                int temp = sorted.at(i-1);
-                sorted.at(i-1) = sorted.at(i);
-                sorted.at(i) = temp;
-                changed++;
-            }
-        }
-    } while (changed != 0);
-    return sorted;
-}
-
-vector<int> improvedBubbleSort(vector<int> numbers){
-    vector<int> sorted = std::move(numbers);
-    int changed;
-    int lastIndex = (int) sorted.size();
-    do {
-        changed = 0;
-        for (int i=1; i<lastIndex; i++){
-            if (sorted.at(i-1) > sorted.at(i)){
-                int temp = sorted.at(i-1);
-                sorted.at(i-1) = sorted.at(i);
-                sorted.at(i) = temp;
-                changed++;
-            }
-        }
-        lastIndex--;
-    } while (changed != 0);
-    return sorted;
-}
 
 void displayTimeTaken(const string &sortType, int listSize){
     auto microDuration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
@@ -163,7 +126,3 @@ void generateFile(int size){
         cout << "Error: Unable to save to file";
     }
 }
-
-
-
-
