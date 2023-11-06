@@ -8,10 +8,11 @@ using std::vector;
 class Sorting {
 
 public:
-    vector<int> static bubbleSort(vector<int> numbers);
-    vector<int> static improvedBubbleSort(vector<int> numbers);
-    vector<int> static quickSort(vector<int> numbers);
-    vector<int> static mergeSort(vector<int> numbers);
+    vector<int> static bubbleSort(const vector<int>& numbers);
+    vector<int> static improvedBubbleSort(const vector<int>& numbers);
+    vector<int> static quickSort(const vector<int>& numbers);
+    vector<int> static mergeSort(const vector<int>& numbers);
+    vector<int> static insertionSort(const vector<int>& numbers);
 
 };
 

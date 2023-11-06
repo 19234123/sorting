@@ -22,7 +22,7 @@ string generateRandomNumber();
 int main() {
     int listSizes[] = {10, 20, 50, 100, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 1000000};
 
-    vector<int> rawNumbers = readFile(1000, true);
+    const vector<int> rawNumbers = readFile(500, false);
     vector<int> numbersToSort = rawNumbers;
 
 //    for (const auto &size: listSizes){
@@ -35,9 +35,9 @@ int main() {
 //    }
 
 
-
-
-
+//    for (const auto &num: numbersToSort){
+//        cout << num << endl;
+//    }
 
     startTime = std::chrono::high_resolution_clock::now();
     Sorting::bubbleSort(numbersToSort);
@@ -54,9 +54,18 @@ int main() {
     numbersToSort = rawNumbers;
 
     startTime = std::chrono::high_resolution_clock::now();
+    Sorting::insertionSort(numbersToSort);
+    endTime = std::chrono::high_resolution_clock::now();
+    displayTimeTaken("Insertion", (int) numbersToSort.size());
+
+    numbersToSort = rawNumbers;
+
+    startTime = std::chrono::high_resolution_clock::now();
     Sorting::mergeSort(numbersToSort);
     endTime = std::chrono::high_resolution_clock::now();
     displayTimeTaken("Merge", (int) numbersToSort.size());
+
+    numbersToSort = rawNumbers;
 
 
 
@@ -87,10 +96,10 @@ void displayTimeTaken(const string &sortType, int listSize){
     auto milliDuration = std::chrono::duration_cast<std::chrono::milliseconds>(microDuration);
     auto secondsDuration = std::chrono::duration_cast<std::chrono::seconds>(milliDuration);
 
-    cout << sortType << " sort: " << listSize << endl;
+    cout << sortType << " sort: " << listSize << " numbers" << endl;
     cout << "Total execution time (Microseconds): " << microDuration.count() << endl;
     cout << "Total execution time (Milliseconds): " << milliDuration.count() << endl;
-    //cout << "Total execution time (Seconds): " << secondsDuration.count() << endl;
+    cout << "Total execution time (Seconds): " << secondsDuration.count() << endl;
     cout << endl;
 }
 

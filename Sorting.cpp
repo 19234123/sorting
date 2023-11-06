@@ -1,7 +1,7 @@
 #include "Sorting.h"
 
-vector<int> Sorting::bubbleSort(vector<int> numbers){
-    vector<int> sorted = std::move(numbers);
+vector<int> Sorting::bubbleSort(const vector<int>& numbers){
+    vector<int> sorted = numbers;
     int changed;
     do {
         changed = 0;
@@ -17,8 +17,8 @@ vector<int> Sorting::bubbleSort(vector<int> numbers){
     return sorted;
 }
 
-vector<int> Sorting::improvedBubbleSort(vector<int> numbers){
-    vector<int> sorted = std::move(numbers);
+vector<int> Sorting::improvedBubbleSort(const vector<int>& numbers){
+    vector<int> sorted = numbers;
     int changed;
     int lastIndex = (int) sorted.size();
     do {
@@ -36,7 +36,7 @@ vector<int> Sorting::improvedBubbleSort(vector<int> numbers){
     return sorted;
 }
 
-vector<int> Sorting::mergeSort(vector<int> numbers){
+vector<int> Sorting::mergeSort(const vector<int>& numbers){
     vector<int> currentList;
     int halfSize = (int) numbers.size() / 2;
     vector<int> firstHalf(numbers.begin(), numbers.begin()+halfSize);
@@ -94,7 +94,28 @@ vector<int> Sorting::mergeSort(vector<int> numbers){
     return currentList;
 }
 
-vector<int> Sorting::quickSort(vector<int> numbers){
+vector<int> Sorting::insertionSort(const vector<int>& numbers) {
+    vector<int> sorted = numbers;
+    int temp;
+
+    for (int i=1; i<sorted.size(); i++){
+        temp = sorted.at(i);
+        for (int j=i-1; j>=0; j--){
+            int currentNumber = sorted.at(j);
+            if (currentNumber > temp) {
+                sorted.at(j + 1) = currentNumber;
+                sorted.at(j) = temp;
+            }
+        }
+    }
+
+    return sorted;
 }
+
+vector<int> Sorting::quickSort(const vector<int>& numbers){
+
+}
+
+
 
 
