@@ -2,8 +2,10 @@
 #include <random>
 #include <fstream>
 #include <chrono>
+#include <utility>
 #include <vector>
 #include "Sorting.h"
+#include "main.h"
 
 using std::string;
 using std::cout;
@@ -12,17 +14,22 @@ using std::vector;
 
 std::chrono::system_clock::time_point startTime;
 std::chrono::system_clock::time_point endTime;
-int maxRandomSize = 1000000;
+
 
 vector<int> readFile(int size, bool fromFile);
 void displayTimeTaken(const string& sortType, int listSize);
 void generateFile(int size);
 string generateRandomNumber();
+vector<int> callSort(vector<int> numbers, vector<int> (*func)(vector<int>));
+void runMultipleTimes(int numberOfRuns, vector<int> (*func)(vector<int>), const vector<int>& numbers);
 
 int main() {
-    int listSizes[] = {10, 20, 50, 100, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 1000000};
+    int listSizes[] = {10, 20, 50, 100, 500, 1000, 2000, 5000, 100000,
+                       20000, 50000, 100000, 1000000, 2000000, 5000000, 10000000,
+                       20000000, 50000000, 100000000};
 
-    const vector<int> rawNumbers = readFile(1000, false);
+
+    const vector<int> rawNumbers = readFile(1000, true);
     vector<int> numbersToSort = rawNumbers;
 
 //    for (const auto &size: listSizes){
@@ -34,31 +41,38 @@ int main() {
 //        displayTimeTaken("Bubble", (int) numbersToSort.size());
 //    }
 
-    //numbersToSort = Sorting::quickSort(numbersToSort);
-
-
+//    numbersToSort = Sorting::bucketSort(numbersToSort);
+//
+//
 //    for (const auto &num: numbersToSort){
 //        cout << num << endl;
 //    }
 
-    startTime = std::chrono::high_resolution_clock::now();
-    Sorting::bubbleSort(numbersToSort);
-    endTime = std::chrono::high_resolution_clock::now();
-    displayTimeTaken("Bubble", (int) numbersToSort.size());
-
-    numbersToSort = rawNumbers;
-
-    startTime = std::chrono::high_resolution_clock::now();
-    Sorting::improvedBubbleSort(numbersToSort);
-    endTime = std::chrono::high_resolution_clock::now();
-    displayTimeTaken("Improved Bubble", (int) numbersToSort.size());
-
-    numbersToSort = rawNumbers;
+//    startTime = std::chrono::high_resolution_clock::now();
+//    Sorting::bubbleSort(numbersToSort);
+//    endTime = std::chrono::high_resolution_clock::now();
+//    displayTimeTaken("Bubble", (int) numbersToSort.size());
+//
+//    numbersToSort = rawNumbers;
+//
+//    startTime = std::chrono::high_resolution_clock::now();
+//    Sorting::improvedBubbleSort(numbersToSort);
+//    endTime = std::chrono::high_resolution_clock::now();
+//    displayTimeTaken("Improved Bubble", (int) numbersToSort.size());
+//
+//    numbersToSort = rawNumbers;
 
     startTime = std::chrono::high_resolution_clock::now();
     Sorting::insertionSort(numbersToSort);
     endTime = std::chrono::high_resolution_clock::now();
     displayTimeTaken("Insertion", (int) numbersToSort.size());
+
+    numbersToSort = rawNumbers;
+
+    startTime = std::chrono::high_resolution_clock::now();
+    Sorting::bucketSort(numbersToSort);
+    endTime = std::chrono::high_resolution_clock::now();
+    displayTimeTaken("Bucket", (int) numbersToSort.size());
 
     numbersToSort = rawNumbers;
 
@@ -76,6 +90,7 @@ int main() {
 
     numbersToSort = rawNumbers;
 
+    //runMultipleTimes(5, reinterpret_cast<vector<int> (*)(vector<int>)>(&Sorting::mergeSort), numbersToSort);
 
 
 
@@ -94,18 +109,48 @@ int main() {
 //    generateFile(20000);
 //    generateFile(50000);
 //    generateFile(100000);
+//    generateFile(200000);
+//    generateFile(500000);
 //    generateFile(1000000);
+//    generateFile(2000000);
+//    generateFile(5000000);
+//    generateFile(10000000);
+//    generateFile(20000000);
+//    generateFile(50000000);
+//    generateFile(100000000);
 
     return 0;
+}
+
+void runMultipleTimes(int numberOfRuns, vector<int> (*func)(vector<int>), const vector<int>& numbers){
+    //std::chrono::system_clock::time_point sumTimes;
+    std::chrono::system_clock::time_point::duration sumTime;// = (startTime - startTime);
+
+    for (int i=0; i<numberOfRuns; i++){
+        startTime = std::chrono::high_resolution_clock::now();
+        callSort(numbers, func);
+        endTime = std::chrono::high_resolution_clock::now();
+
+        auto microDuration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+        sumTime += microDuration;
+    }
+
+    cout << "average: " << (sumTime.count() / numberOfRuns) << endl;
+}
+
+vector<int> callSort(vector<int> numbers, vector<int> (*func)(vector<int>)){
+    return func(std::move(numbers));
 }
 
 
 void displayTimeTaken(const string &sortType, int listSize){
     auto microDuration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+    auto nanoDuration = std::chrono::duration_cast<std::chrono::nanoseconds>(endTime - startTime);
     auto milliDuration = std::chrono::duration_cast<std::chrono::milliseconds>(microDuration);
     auto secondsDuration = std::chrono::duration_cast<std::chrono::seconds>(milliDuration);
 
     cout << sortType << " sort: " << listSize << " numbers" << endl;
+    //cout << "Total execution time (Nanoseconds): " << nanoDuration.count() << endl;
     cout << "Total execution time (Microseconds): " << microDuration.count() << endl;
     cout << "Total execution time (Milliseconds): " << milliDuration.count() << endl;
     cout << "Total execution time (Seconds): " << secondsDuration.count() << endl;
@@ -138,7 +183,7 @@ vector<int> readFile(int size, bool fromFile){
 string generateRandomNumber(){
     std::random_device device;
     std::mt19937 rng(device());
-    std::uniform_int_distribution<std::mt19937::result_type> distribution(0, maxRandomSize);
+    std::uniform_int_distribution<std::mt19937::result_type> distribution(0, main::maxRandomSize);
 
     return std::to_string(distribution(rng));
 }
@@ -152,7 +197,7 @@ void generateFile(int size){
         for (int i=0; i<size; i++) {
             string number = generateRandomNumber();
             file << number << endl;
-            cout << number << endl;
+            //cout << number << endl;
         }
         file.close();
         cout << "Save successful - " << filename << endl;

@@ -1,4 +1,6 @@
 #include "Sorting.h"
+#include "main.h"
+
 
 vector<int> Sorting::bubbleSort(const vector<int>& numbers){
     vector<int> sorted = numbers;
@@ -144,6 +146,28 @@ vector<int> Sorting::quickSort(const vector<int>& numbers){
     return currentList;
 }
 
+vector<int> Sorting::bucketSort(const vector<int> &numbers) {
+    vector<int> sorted;
+    vector<vector<int>> buckets;
+    int numberOfBuckets = 10;
 
+    for (int i=0; i<numberOfBuckets; i++){
+        vector<int> bucket;
+        buckets.push_back(bucket);
+    }
 
+    int bucketRange = main::maxRandomSize / numberOfBuckets;
+    for (const auto &num: numbers){
+        int index = num / bucketRange;
+        buckets.at(index).push_back(num);
+    }
 
+    for (auto &bucket: buckets){
+        if (!bucket.empty()) {
+            bucket = quickSort(bucket);
+            sorted.insert(sorted.end(), bucket.begin(), bucket.end());
+        }
+    }
+
+    return sorted;
+}

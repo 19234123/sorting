@@ -13,6 +13,7 @@ public:
     vector<int> static quickSort(const vector<int>& numbers);
     vector<int> static mergeSort(const vector<int>& numbers);
     vector<int> static insertionSort(const vector<int>& numbers);
+    vector<int> static bucketSort(const vector<int>& numbers);
 
 };
 
