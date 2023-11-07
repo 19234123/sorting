@@ -113,7 +113,35 @@ vector<int> Sorting::insertionSort(const vector<int>& numbers) {
 }
 
 vector<int> Sorting::quickSort(const vector<int>& numbers){
+    vector<int> currentList;
+    int listSize = (int)numbers.size();
 
+    if (listSize > 1){
+        int pivotIndex = listSize/2;
+        int pivot = numbers.at(pivotIndex);
+        vector<int> lessThanEqual;
+        vector<int> greaterThan;
+
+        for (int i=0; i<listSize; i++){
+            if (i != pivotIndex) {
+                if (numbers.at(i) <= pivot) {
+                    lessThanEqual.push_back(numbers.at(i));
+                } else {
+                    greaterThan.push_back(numbers.at(i));
+                }
+            }
+        }
+
+        lessThanEqual = quickSort(lessThanEqual);
+        greaterThan = quickSort(greaterThan);
+
+        currentList.insert(currentList.end(), lessThanEqual.begin(), lessThanEqual.end());
+        currentList.push_back(pivot);
+        currentList.insert(currentList.end(), greaterThan.begin(), greaterThan.end());
+    } else {
+        currentList = numbers;
+    }
+    return currentList;
 }
 
 

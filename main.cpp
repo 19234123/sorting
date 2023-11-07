@@ -22,7 +22,7 @@ string generateRandomNumber();
 int main() {
     int listSizes[] = {10, 20, 50, 100, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 1000000};
 
-    const vector<int> rawNumbers = readFile(500, false);
+    const vector<int> rawNumbers = readFile(1000, false);
     vector<int> numbersToSort = rawNumbers;
 
 //    for (const auto &size: listSizes){
@@ -33,6 +33,8 @@ int main() {
 //        endTime = std::chrono::high_resolution_clock::now();
 //        displayTimeTaken("Bubble", (int) numbersToSort.size());
 //    }
+
+    //numbersToSort = Sorting::quickSort(numbersToSort);
 
 
 //    for (const auto &num: numbersToSort){
@@ -64,6 +66,13 @@ int main() {
     Sorting::mergeSort(numbersToSort);
     endTime = std::chrono::high_resolution_clock::now();
     displayTimeTaken("Merge", (int) numbersToSort.size());
+
+    numbersToSort = rawNumbers;
+
+    startTime = std::chrono::high_resolution_clock::now();
+    Sorting::mergeSort(numbersToSort);
+    endTime = std::chrono::high_resolution_clock::now();
+    displayTimeTaken("Quick", (int) numbersToSort.size());
 
     numbersToSort = rawNumbers;
 
@@ -121,6 +130,7 @@ vector<int> readFile(int size, bool fromFile){
         for (int i=0; i<size; i++){
             numbers.push_back(std::stoi(generateRandomNumber()));
         }
+        cout << size << " numbers generated!\n\n";
     }
     return numbers;
 }
