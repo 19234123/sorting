@@ -146,7 +146,7 @@ vector<int> Sorting::quickSort(const vector<int>& numbers){
     return currentList;
 }
 
-vector<int> Sorting::bucketSort(const vector<int> &numbers) {
+vector<int> Sorting::bucketSort(const vector<int> &numbers, int sortType) {
     vector<int> sorted;
     vector<vector<int>> buckets;
     int numberOfBuckets = 10;
@@ -159,15 +159,30 @@ vector<int> Sorting::bucketSort(const vector<int> &numbers) {
     int bucketRange = main::maxRandomSize / numberOfBuckets;
     for (const auto &num: numbers){
         int index = num / bucketRange;
+        if (index == 10){
+            index = 9;
+        }
         buckets.at(index).push_back(num);
     }
 
     for (auto &bucket: buckets){
-        if (!bucket.empty()) {
-            bucket = quickSort(bucket);
-            sorted.insert(sorted.end(), bucket.begin(), bucket.end());
+        switch (sortType){
+            case 0:
+                bucket = quickSort(bucket);
+                break;
+            case 1:
+                bucket = mergeSort(bucket);
+                break;
+            case 2:
+                bucket = insertionSort(bucket);
+                break;
+            case 3:
+                bucket = bubbleSort(bucket);
+                break;
+            default:
+                bucket = quickSort(bucket);
         }
+        sorted.insert(sorted.end(), bucket.begin(), bucket.end());
     }
-
     return sorted;
 }
